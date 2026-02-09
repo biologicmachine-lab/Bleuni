@@ -70,9 +70,11 @@ exec.onclick = async () => {
         await BLE.read();
         break;
       case "write":
+        state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
         await BLE.write(writeVal.value);
         break;
       case "notify":
+        state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
         await BLE.notify();
         break;
     }
@@ -117,5 +119,4 @@ deviceSelect.onchange = () => {
 };
 
 /* INITIAL LOGS */
-logFingerprint();
 logMTU();
