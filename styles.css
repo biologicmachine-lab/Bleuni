@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, monospace;
+}
+
+body {
+  background: #0f1220;
+  color: #eaeaff;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.panel {
+  max-width: 700px;
+  margin: auto;
+  background: #1a1e33;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+select, input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+}
+
+button {
+  background: #4c6ef5;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+button:disabled {
+  background: #555;
+}
+
+.export {
+  display: flex;
+  gap: 10px;
+}
+
+.log-container {
+  margin-top: 20px;
+  background: black;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 5px;
+}
+
+#log {
+  color: #00ff9c;
+  font-size: 13px;
+}
