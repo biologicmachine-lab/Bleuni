@@ -41,7 +41,7 @@ export function exportTimeline() {
 }
 
 export function isDeviceFullyInitialized() {
-  return !!(state.device && state.services && state.services.length > 0 && state.characteristics && state.characteristics.length > 0);
+  return state.device && state.services && state.services.length > 0 && state.characteristics && state.characteristics.length > 0;
 }
 
 export function logFingerprint() {

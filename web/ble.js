@@ -62,12 +62,16 @@ export async function read() {
   }
 }
 
-export async function write(data) {
-  // Select the characteristic from charSel before writing
+function selectCharacteristicFromUI() {
   const charSel = document.getElementById("charSelect");
   if (charSel && charSel.value) {
     state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
   }
+}
+
+export async function write(data) {
+  // Select the characteristic from charSel before writing
+  selectCharacteristicFromUI();
   
   if (!state.characteristic) return log("No characteristic selected");
   try {
@@ -80,10 +84,7 @@ export async function write(data) {
 
 export async function notify() {
   // Select the characteristic from charSel before starting notifications
-  const charSel = document.getElementById("charSelect");
-  if (charSel && charSel.value) {
-    state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
-  }
+  selectCharacteristicFromUI();
   
   if (!state.characteristic) return log("No characteristic selected");
   try {
