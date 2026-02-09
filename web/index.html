@@ -14,7 +14,7 @@
 
   <label>Nearby Devices</label>
   <select id="deviceSelect">
-  	 <option enabled selected>Select a device</option>
+  	 <option disabled selected value="">Select a device</option>
   </select>
 
   <label>BLE Profile</label>
@@ -22,7 +22,7 @@
 
   <label>Action</label>
   <select id="actionSelect">
-    <option enabled selected>Select action</option>
+    <option disabled selected value="">Select action</option>
     <option value="discover">Discover</option>
     <option value="connect">Connect</option>
     <option value="services">Get Services</option>
@@ -37,10 +37,10 @@
   <input id="writeValue" placeholder="Write value (UTF-8)" style="display:none" />
 
   <label>Service</label>
-  <select id="serviceSelect" enabled></select>
+  <select id="serviceSelect" disabled></select>
 
   <label>Characteristic</label>
-  <select id="charSelect" enabled></select>
+  <select id="charSelect" disabled></select>
 
   <button id="scanBtn">Scan Devices</button>
   <button id="executeBtn" disabled>Execute</button>

@@ -40,8 +40,12 @@ export function exportTimeline() {
   a.click();
 }
 
+export function isDeviceFullyInitialized() {
+  return !!(state.device && state.services && state.services.length > 0 && state.characteristics && state.characteristics.length > 0);
+}
+
 export function logFingerprint() {
-  if (!state.device || !state.services || !state.characteristics) {
+  if (!isDeviceFullyInitialized()) {
     log("Cannot fingerprint — device or services not initialized");
     return;
   }
@@ -55,7 +59,4 @@ export function logMTU() {
   log(`MTU: ${mtu.supported ? "Negotiable" : "Fixed"} — ${mtu.reason}`);
 }
 
-// Optional auto-log on load
-if (state.device) logFingerprint();
-logMTU();
 log("Logger initialized successfully");

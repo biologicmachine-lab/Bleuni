@@ -32,34 +32,69 @@ export async function getServices(filter) {
     log("Not connected");
     return [];
   }
-  state.services = await state.server.getPrimaryServices();
-  return state.services.filter(s => !filter || s.uuid.includes(filter));
+  try {
+    state.services = await state.server.getPrimaryServices();
+    return state.services.filter(s => !filter || s.uuid.includes(filter));
+  } catch (err) {
+    log(`Get services error: ${err.message}`);
+    return [];
+  }
 }
 
 export async function getCharacteristics(filter) {
   if (!state.service) return [];
-  state.characteristics = await state.service.getCharacteristics();
-  return state.characteristics.filter(c => !filter || c.uuid.includes(filter));
+  try {
+    state.characteristics = await state.service.getCharacteristics();
+    return state.characteristics.filter(c => !filter || c.uuid.includes(filter));
+  } catch (err) {
+    log(`Get characteristics error: ${err.message}`);
+    return [];
+  }
 }
 
 export async function read() {
   if (!state.characteristic) return log("No characteristic selected");
-  const val = await state.characteristic.readValue();
-  log(`Read: ${new TextDecoder().decode(val)}`);
+  try {
+    const val = await state.characteristic.readValue();
+    log(`Read: ${new TextDecoder().decode(val)}`);
+  } catch (err) {
+    log(`Read error: ${err.message}`);
+  }
 }
 
 export async function write(data) {
+  // Select the characteristic from charSel before writing
+  const charSel = document.getElementById("charSelect");
+  if (charSel && charSel.value) {
+    state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
+  }
+  
   if (!state.characteristic) return log("No characteristic selected");
-  await state.characteristic.writeValue(new TextEncoder().encode(data));
-  log(`Written: ${data}`);
+  try {
+    await state.characteristic.writeValue(new TextEncoder().encode(data));
+    log(`Written: ${data}`);
+  } catch (err) {
+    log(`Write error: ${err.message}`);
+  }
 }
 
 export async function notify() {
+  // Select the characteristic from charSel before starting notifications
+  const charSel = document.getElementById("charSelect");
+  if (charSel && charSel.value) {
+    state.characteristic = state.characteristics.find(c => c.uuid === charSel.value);
+  }
+  
   if (!state.characteristic) return log("No characteristic selected");
-  await state.characteristic.startNotifications();
-  state.characteristic.addEventListener("characteristicvaluechanged", e => {
-    log(`Notify: ${new TextDecoder().decode(e.target.value)}`);
-  });
+  try {
+    await state.characteristic.startNotifications();
+    state.characteristic.addEventListener("characteristicvaluechanged", e => {
+      log(`Notify: ${new TextDecoder().decode(e.target.value)}`);
+    });
+    log("Notifications started");
+  } catch (err) {
+    log(`Notify error: ${err.message}`);
+  }
 }
 
 /* =========================
@@ -68,11 +103,24 @@ export async function notify() {
 export async function scanDevices({ nameFilter = "", serviceUUIDs = [] } = {}) {
   log("Scanning for BLE devices...");
   try {
-    const device = await navigator.bluetooth.requestDevice({
-      acceptAllDevices: true,
-      optionalServices: serviceUUIDs,
-      filters: nameFilter ? [{ namePrefix: nameFilter }] : []
-    });
+    const options = {};
+    
+    if (nameFilter || serviceUUIDs.length > 0) {
+      // Use filters when we have specific criteria
+      options.filters = [];
+      if (nameFilter) {
+        options.filters.push({ namePrefix: nameFilter });
+      }
+      if (serviceUUIDs.length > 0) {
+        options.optionalServices = serviceUUIDs;
+      }
+    } else {
+      // Use acceptAllDevices only when no filters are specified
+      options.acceptAllDevices = true;
+      options.optionalServices = serviceUUIDs;
+    }
+
+    const device = await navigator.bluetooth.requestDevice(options);
 
     state.device = device;
     log(`Device found: ${device.name || "Unnamed"} (${device.id})`);

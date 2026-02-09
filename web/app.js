@@ -115,7 +115,3 @@ deviceSelect.onchange = () => {
     log(`Device selected from dropdown: ${state.device.name || "Unnamed"}`);
   }
 };
-
-/* INITIAL LOGS */
-logFingerprint();
-logMTU();
