@@ -40,8 +40,16 @@ export function exportTimeline() {
   a.click();
 }
 
+function isDeviceFullyInitialized() {
+  return state.device && 
+         state.services && 
+         state.services.length > 0 && 
+         state.characteristics && 
+         state.characteristics.length > 0;
+}
+
 export function logFingerprint() {
-  if (!state.device || !state.services || state.services.length === 0 || !state.characteristics || state.characteristics.length === 0) {
+  if (!isDeviceFullyInitialized()) {
     log("Cannot fingerprint — device or services not initialized");
     return;
   }

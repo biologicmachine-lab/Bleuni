@@ -100,11 +100,12 @@ export async function scanDevices({ nameFilter = "", serviceUUIDs = [] } = {}) {
 
     // acceptAllDevices and filters are mutually exclusive
     if (nameFilter || serviceUUIDs.length > 0) {
-      options.filters = [];
-      if (nameFilter) options.filters.push({ namePrefix: nameFilter });
+      const filters = [];
+      if (nameFilter) filters.push({ namePrefix: nameFilter });
       if (serviceUUIDs.length > 0) {
-        serviceUUIDs.forEach(uuid => options.filters.push({ services: [uuid] }));
+        serviceUUIDs.forEach(uuid => filters.push({ services: [uuid] }));
       }
+      options.filters = filters;
     } else {
       options.acceptAllDevices = true;
     }
