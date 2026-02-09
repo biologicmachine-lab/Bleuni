@@ -41,7 +41,7 @@ export function exportTimeline() {
 }
 
 export function logFingerprint() {
-  if (!state.device || !state.services || !state.characteristics) {
+  if (!state.device || !state.services || state.services.length === 0 || !state.characteristics || state.characteristics.length === 0) {
     log("Cannot fingerprint — device or services not initialized");
     return;
   }
@@ -54,8 +54,3 @@ export function logMTU() {
   const mtu = reportMTUSupport();
   log(`MTU: ${mtu.supported ? "Negotiable" : "Fixed"} — ${mtu.reason}`);
 }
-
-// Optional auto-log on load
-if (state.device) logFingerprint();
-logMTU();
-log("Logger initialized successfully");
