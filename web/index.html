@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BLE Unified Diagnostic Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<h1>BLE Unified Diagnostic Console</h1>
+
+<div class="panel">
+
+  <label>Nearby Devices</label>
+  <select id="deviceSelect">
+  	 <option enabled selected>Select a device</option>
+  </select>
+
+  <label>BLE Profile</label>
+  <select id="profileSelect"></select>
+
+  <label>Action</label>
+  <select id="actionSelect">
+    <option enabled selected>Select action</option>
+    <option value="discover">Discover</option>
+    <option value="connect">Connect</option>
+    <option value="services">Get Services</option>
+    <option value="characteristics">Get Characteristics</option>
+    <option value="read">Read</option>
+    <option value="write">Write</option>
+    <option value="notify">Notify</option>
+  </select>
+
+  <input id="serviceFilter" placeholder="Service UUID filter" />
+  <input id="charFilter" placeholder="Characteristic UUID filter" />
+  <input id="writeValue" placeholder="Write value (UTF-8)" style="display:none" />
+
+  <label>Service</label>
+  <select id="serviceSelect" enabled></select>
+
+  <label>Characteristic</label>
+  <select id="charSelect" enabled></select>
+
+  <button id="scanBtn">Scan Devices</button>
+  <button id="executeBtn" disabled>Execute</button>
+
+  <div class="export">
+    <button id="exportTxt">Export TXT</button>
+    <button id="exportJson">Export JSON</button>
+  </div>
+
+</div>
+
+<div class="log-container">
+  <div id="log"></div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
